@@ -37,7 +37,7 @@ while True:
 
 # Open the browser
 print("Warming up Selenium...")
-driver = webdriver.Chrome(options=launch_options)
+driver = webdriver.Chrome(options=launch_options) # TODO: Add error handling
 print("Seleneum is ready!")
 
 # Open the SoundCloud page for the track
@@ -50,10 +50,13 @@ log = driver.execute_script("var performance = window.performance || window.mozP
 # Search for the song title on the page
 filename = driver.find_element(by='class name', value='soundTitle__title').find_element(by="tag name", value='span').text
 
+# TODO: Get the album art from the page
+
 # Define the variable for holding the link to the song's download
 link = None
 
 # Search all logs for "playlist.m3u8" (the audio data) and use the last instance
+# TODO: Make this more robust
 print("Finding Download Link...")
 for item in log:
 	if ".m3u8" in item['name']:
@@ -69,7 +72,7 @@ driver.quit()
 
 # Use ffmpeg to download the audio and convert it to mp3
 print("Downloading...")
-subprocess.call("ffmpeg -protocol_whitelist file,http,https,tcp,tls -i \"{}\" -b:a 320k \"file.mp3\"".format(link, filename), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+subprocess.call("ffmpeg -protocol_whitelist file,http,https,tcp,tls -i \"{}\" -b:a 320k \"file.mp3\"".format(link, filename), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) # TODO: Edit the command to embed the album art
 print("Download complete!")
 
 # Prompt the user to select a directory to save the file

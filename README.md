@@ -5,6 +5,8 @@ This is a selenium-based script that will download the mp3 file from a soundclou
 
 The user is given the choice on where to save the file and all downloaded mp3 files are encoded using ffmpeg.
 
+*Embedding of album art will be supported in a later version.*
+
 ## Requirements
 - [Python](https://www.python.org/)
 - [ffmpeg](https://www.ffmpeg.org/)
