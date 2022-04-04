@@ -6,7 +6,6 @@ This is a selenium-based script that will download the mp3 file from a soundclou
 The user is given the choice on where to save the file and all downloaded mp3 files are encoded using ffmpeg.
 
 ## Requirements
-- [Selenium](https://www.seleniumhq.org/)
 - [Python](https://www.python.org/)
 - [ffmpeg](https://www.ffmpeg.org/)
 - [chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
@@ -25,6 +24,17 @@ python main.py
 - The file will be saved in the path given by the user.
 
 ## Installation instructions
+- Clone the repository with the following command:
+```
+git clone https://github.com/JustaMushroom/soundcloud-dl.git
+```
 - Install all the required software.
-- Install the required packages in requirements.txt.
+  - Make sure that FFMPEG and chromedriver are installed in your PATH or in the project directory.
+- Install the required packages in requirements.txt using:
+```
+-pip install -r requirements.txt
+```
 - Run the script.
+```
+python main.py
+````
