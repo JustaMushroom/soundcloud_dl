@@ -10,7 +10,7 @@ The user is given the choice on where to save the file and all downloaded mp3 fi
 ## Requirements
 - [Python](https://www.python.org/)
 - [ffmpeg](https://www.ffmpeg.org/)
-- [chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
+- [chromedriver](https://sites.google.com/chromium.org/driver/)
 - [Chrome](https://www.google.com/chrome/browser/desktop/)
 - Packages in requirements.txt
 
