@@ -34,7 +34,7 @@ git clone https://github.com/JustaMushroom/soundcloud-dl.git
   - Make sure that FFMPEG and chromedriver are installed in your PATH or in the project directory.
 - Install the required packages in requirements.txt using:
 ```
--pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 - Run the script.
 ```
