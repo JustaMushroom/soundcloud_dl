@@ -56,12 +56,11 @@ filename = driver.find_element(by='class name', value='soundTitle__title').find_
 link = None
 
 # Search all logs for "playlist.m3u8" (the audio data) and use the last instance
-# TODO: Make this more robust
 print("Finding Download Link...")
 for item in log:
-	if ".m3u8" in item['name']:
-		if "playlist.m3u8" in item['name']:
-			link = item['name']
+	if "playlist.m3u8" in item['name']:
+		link = item['name']
+		break
 
 # Show the user the download link
 print("Link Found: " + link)
