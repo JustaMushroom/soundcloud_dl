@@ -76,7 +76,7 @@ print("Download complete!")
 
 # Prompt the user to select a directory to save the file
 print("Please select a save location:")
-target = filedialog.asksaveasfilename(confirmoverwrite=False, defaultextension=".mp3", initialfile="{}.mp3".format(filename), title="Save as...", initialdir=Path.home() / "Desktop/")
+target = filedialog.asksaveasfilename(defaultextension=".mp3", initialfile="{}.mp3".format(filename), title="Save as...", initialdir=Path.home() / "Desktop/")
 
 # Move the file to the selected directory
 print("Moving file...")
