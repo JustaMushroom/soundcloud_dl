@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import sys
 import subprocess
 import re
+import os
 import shutil
 from pathlib import Path
 from tkinter import filedialog
@@ -65,14 +66,47 @@ for item in log:
 # Show the user the download link
 print("Link Found: " + link)
 
+#Extract the album art from the link
+print("Extracting Album Art...")
+elements = driver.find_elements(by='class name', value='sc-artwork')
+art = None
+
+for element in elements:
+	if element.get_attribute("aria-role") != "img":
+		continue
+
+	style = element.get_attribute('style')
+	match = re.search(r'background-image: url\((.*)\)', style)
+	if match and "500x500" in match.group(1):
+		art = match.group(1)
+		break
+
+if art is not None:
+	print("Album Art Found: " + art)
+else:
+	print("Album Art Not Found")
+
 # Close the browser
 print("Cooling down Selenium...")
 driver.quit()
 
 # Use ffmpeg to download the audio and convert it to mp3
 print("Downloading...")
-subprocess.call("ffmpeg -protocol_whitelist file,http,https,tcp,tls -i \"{}\" -b:a 320k \"file.mp3\"".format(link, filename), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) # TODO: Edit the command to embed the album art
+# Delete the old file if it exists
+if Path("file.mp3").exists():
+	os.remove("file.mp3")
+
+if Path("file2.mp3").exists():
+	os.remove("file2.mp3")
+
+subprocess.call("ffmpeg -protocol_whitelist file,http,https,tcp,tls -i \"{}\" -b:a 320k \"file.mp3\"".format(link), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 print("Download complete!")
+
+print("Embedding Album Art...")
+with open("file.log", "w") as log:
+	ext = subprocess.call("ffmpeg -i file.mp3 -protocol_whitelist file,http,https,tcp,tls -i \"{}\" -map 0:a -map 1:0 -c:a copy -id3v2_version 3 \"file2.mp3\"".format(art), stdout=log, stderr=log, shell=True)
+print("Embedding Complete!") if ext == 0 else print("Embedding Failed! Using original file...")
+
 
 # Prompt the user to select a directory to save the file
 print("Please select a save location:")
@@ -80,7 +114,11 @@ target = filedialog.asksaveasfilename(defaultextension=".mp3", initialfile="{}.m
 
 # Move the file to the selected directory
 print("Moving file...")
-shutil.move("file.mp3", target)
+shutil.move("file2.mp3" if ext == 0 else "file.mp3", target)
+# Remove the old file
+print("Cleaning up...")
+os.remove("file.mp3") if ext == 0 else None
+os.remove("file2.mp3") if ext == 1 else None
 
 # Done
 print("Done!")

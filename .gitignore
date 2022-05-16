@@ -2,3 +2,4 @@ venv/
 .idea/
 chromedriver.exe
 geckodriver.log
+file.log
