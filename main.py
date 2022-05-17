@@ -8,6 +8,7 @@ import os
 import shutil
 from pathlib import Path
 from tkinter import filedialog
+import requests
 
 # ChromeDriver Launch Options
 launch_options = Options()
@@ -78,7 +79,7 @@ for element in elements:
 	style = element.get_attribute('style')
 	match = re.search(r'background-image: url\((.*)\)', style)
 	if match and "500x500" in match.group(1):
-		art = match.group(1)
+		art = match.group(1).replace("\"", "")
 		break
 
 if art is not None:
@@ -107,6 +108,19 @@ with open("file.log", "w") as log:
 	ext = subprocess.call("ffmpeg -i file.mp3 -protocol_whitelist file,http,https,tcp,tls -i \"{}\" -map 0:a -map 1:0 -c:a copy -id3v2_version 3 \"file2.mp3\"".format(art), stdout=log, stderr=log, shell=True)
 print("Embedding Complete!") if ext == 0 else print("Embedding Failed! Using original file...")
 
+if ext == 1:
+	print("Attempting different embed method...")
+	with requests.get(art, stream=True) as r:
+		r.raise_for_status()
+		with open("art.jpg", "wb") as f:
+			for chunk in r.iter_content(chunk_size=8192):
+				if chunk:
+					f.write(chunk)
+	os.remove("file2.mp3")
+	with open("embed2.log", "w") as log:
+		ext = subprocess.call("ffmpeg -i file.mp3 -i art.jpg -map 0:a -map 1:0 -c:a copy -id3v2_version 3 \"file2.mp3\"".format(art), stdout=log, stderr=log, shell=True)
+	print("Embedding Complete!") if ext == 0 else print("Embedding Failed! Using original file...")
+	os.remove("art.jpg")
 
 # Prompt the user to select a directory to save the file
 print("Please select a save location:")
