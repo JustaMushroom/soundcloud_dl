@@ -110,7 +110,7 @@ subprocess.call("ffmpeg -protocol_whitelist file,http,https,tcp,tls -i \"{}\" -b
 print("Download complete!")
 
 print("Embedding Album Art...")
-with open("file.log", "w") as log:
+with open("embed1.log", "w") as log:
 	ext = subprocess.call("ffmpeg -i file.mp3 -protocol_whitelist file,http,https,tcp,tls -i \"{}\" -map 0:a -map 1:0 -c:a copy -id3v2_version 3 \"file2.mp3\"".format(art), stdout=log, stderr=log, shell=True)
 print("Embedding Complete!") if ext == 0 else print("Embedding Failed! Using original file...")
 
