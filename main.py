@@ -46,11 +46,17 @@ print("Seleneum is ready!")
 print("Opening SoundCloud...")
 driver.get(link)
 
-# Get all network logs from the browser
-log = driver.execute_script("var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;")
+while True:
+	try:
+		# Get all network logs from the browser
+		log = driver.execute_script("var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;")
 
-# Search for the song title on the page
-filename = driver.find_element(by='class name', value='soundTitle__title').find_element(by="tag name", value='span').text
+		# Search for the song title on the page
+		filename = driver.find_element(by='class name', value='soundTitle__title').find_element(by="tag name", value='span').text
+		break
+	except:
+		print("Chromedriver could not get the correct info, Selenium needs to reload the page")
+		driver.refresh()
 
 # TODO: Get the album art from the page
 
